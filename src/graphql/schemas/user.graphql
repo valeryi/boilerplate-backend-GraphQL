@@ -1,0 +1,7 @@
+extend type Query {
+  users: String
+}
+
+extend type Mutation {
+  createUser(data: String): String
+}
