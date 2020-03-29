@@ -5,6 +5,7 @@ import { applyErrorHandlers } from './errorHandlers';
 import * as errorHandlers from './errorHandlers/handlers';
 import { sysLog } from './utils/winston';
 import { env } from './environments';
+import { database } from './db/mongoose';
 
 process.on("uncaughtException", e => { // LEARN: learn more about process and its properties and methods 
     console.log(e);
@@ -17,14 +18,14 @@ process.on("unhandledRejection", e => {
 });
 
 const app = express();
-const port = process.env.PORT || 3000;
+database.init();
 
 applyExpressMiddleware(app, wrappers);
 applyGraphQLMiddleware(app);
 applyErrorHandlers(app, errorHandlers);
 
 app.listen(env.port, () => {
-    sysLog.info(`Server running at: http://localhost:${port}/graphql`)
+    sysLog.info(`Server running at: http://localhost:${env.port}/graphql`)
 });
 
 // Here I receive all necessary params and data for setting up an express / apollo server 
