@@ -4,9 +4,11 @@ import moment from 'moment';
 const { createLogger, format, transports } = winston;
 const { label, printf, colorize, combine } = format;
 
-const LoggerFormat = printf((info: any) => // FIXME: Fix file logging. Log files don't keep format
-    moment().format('YYYY-MM-DD HH-mm-ss SSS') + ` | [ ` + info.label.toUpperCase() + ` ] | ` + info.level.toUpperCase() + `: ` + info.message
-);
+const LoggerFormat = printf((info: any) => {
+
+    // FIXME: Fix file logging. Log files don't keep format
+    return `${moment().format('YYYY-MM-DD HH-mm-ss SSS')} | [ ${info.label.toUpperCase()} ] | ${info.level.toUpperCase()} : ${info.message} `
+});
 
 const LoggerTransports = [
     new transports.File({ filename: 'logs/error.log', level: 'error' }),
