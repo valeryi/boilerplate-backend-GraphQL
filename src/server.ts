@@ -4,6 +4,7 @@ import { applyExpressMiddleware, wrappers } from './middlewares/index';
 import { applyErrorHandlers } from './errorHandlers';
 import * as errorHandlers from './errorHandlers/handlers';
 import { sysLog } from './utils/winston';
+import { env } from './environments';
 
 process.on("uncaughtException", e => { // LEARN: learn more about process and its properties and methods 
     console.log(e);
@@ -22,7 +23,7 @@ applyExpressMiddleware(app, wrappers);
 applyGraphQLMiddleware(app);
 applyErrorHandlers(app, errorHandlers);
 
-app.listen(port, () => {
+app.listen(env.port, () => {
     sysLog.info(`Server running at: http://localhost:${port}/graphql`)
 });
 

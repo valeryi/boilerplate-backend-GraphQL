@@ -1,18 +1,19 @@
 import winston from 'winston';
 import moment from 'moment';
+import { env } from '../environments';
 
 const { createLogger, format, transports } = winston;
-const { label, printf, colorize, combine } = format;
+const { label, printf, combine } = format;
 
 const LoggerFormat = printf((info: any) => {
 
     // FIXME: Fix file logging. Log files don't keep format
-    return `${moment().format('YYYY-MM-DD HH-mm-ss SSS')} | [ ${info.label.toUpperCase()} ] | ${info.level.toUpperCase()} : ${info.message} `
+    return `${moment().format('YYYY-MM-DD HH-mm-ss SSS')} | [ ${info.label.toUpperCase()} ] | ${info.level.toUpperCase()} : ${info.message}`
 });
 
 const LoggerTransports = [
     new transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new transports.File({ filename: 'logs/combined.log' })
+    new transports.File({ filename: 'logs/combined.log' }),
 ];
 
 const customLevels = {
@@ -35,23 +36,23 @@ const customLevels = {
 };
 
 export const logger = createLogger({
-    level: 'debug',
+    level: env.log_level,
     levels: customLevels.levels,
     format: combine(
         label({ label: 'logger' }),
         LoggerFormat,
-        colorize({ all: true }),
+        // colorize({ all: true }),
     ),
     transports: LoggerTransports
 });
 
 export const sysLog = createLogger({
-    level: 'debug',
+    level: env.log_level,
     levels: customLevels.levels,
     format: format.combine(
         label({ label: 'System' }),
         LoggerFormat,
-        colorize({ all: true }),
+        // colorize({ all: true }),
     ),
     transports: LoggerTransports
 });
@@ -62,7 +63,7 @@ export const debug = createLogger({
     format: format.combine(
         label({ label: 'debug' }),
         LoggerFormat,
-        colorize({ all: true })
+        // colorize({ all: true })
     ),
     transports: [
         new transports.Console({
