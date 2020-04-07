@@ -3,12 +3,17 @@ import { env } from "../environments";
 import { sysLog } from '../utils/winston';
 
 class Database {
+    private db: Connection = mongoose.connection;
     private _provider: string = 'MongoDB';
     private _username: string | undefined = env.db.username;
     private _password: string | undefined = env.db.password;
     private _dbName: string | undefined = env.db.name;
-    private options: Object = { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false };
-    private db: Connection = mongoose.connection;
+    private options: Object = {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+        useFindAndModify: false,
+        useCreateIndex: true
+    };
 
     constructor() { }
 

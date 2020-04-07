@@ -1,7 +1,31 @@
-extend type Query {
-  users: String
-}
+directive @upper(test: String) on FIELD_DEFINITION
+directive @input(inputParams: String) on INPUT_FIELD_DEFINITION
 
 extend type Mutation {
-  createUser(data: String): String
+  createUser(data: InputUser!): User!
+  somethingElse(data: InputUser): User
+}
+
+extend type Query {
+  allUsers: [User!]
+}
+
+# Add scaler types, Date, ...
+type User {
+  _id: ID
+  firstName: String! @upper(test: "params")
+  lastName: String!
+  email: String!
+  password: String!
+  avatar: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+input InputUser {
+  firstName: String! @input(inputParams: "params for input field")
+  lastName: String!
+  email: String!
+  password: String!
+  avatar: String
 }

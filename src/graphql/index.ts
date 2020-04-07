@@ -1,16 +1,26 @@
-import { readySchema } from './schemas';
-import { readyResolvers } from './resolvers';
 import { makeExecutableSchema } from 'graphql-tools';
 import { applyMiddleware } from 'graphql-middleware';
 import { ApolloServer } from "apollo-server-express";
 import { Application } from 'express';
 
-const schema = makeExecutableSchema({ typeDefs: readySchema, resolvers: readyResolvers });
-const middleware = applyMiddleware(schema);
+import { applyGeneralValidation } from './validation/general';
+import { readySchema } from './schemas';
+import { readyResolvers } from './resolvers';
+import { customDirectives, schemaMiddlewares } from './validation';
+
+const schemaMiddleware = makeExecutableSchema({
+    typeDefs: readySchema,
+    resolvers: readyResolvers,
+    schemaDirectives: customDirectives
+});
+
+const schema = applyMiddleware(schemaMiddleware, schemaMiddlewares.middleware);
+applyGeneralValidation(schemaMiddleware);
 
 const apolloServer = new ApolloServer({
-    schema: middleware,
-    debug: true
+    schema: schema,
+    debug: true,
+    context: {}
 })
 
 export const applyGraphQLMiddleware = (app: Application) => {
