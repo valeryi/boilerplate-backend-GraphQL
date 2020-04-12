@@ -19,7 +19,6 @@ export function applyExpressMiddleware(router: Router, wrappers: any): void {
                     const handler: Middleware = wrapper[key];
 
                     handler(router);
-
                 }
             }
 
