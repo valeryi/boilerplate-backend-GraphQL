@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const userSchema: Schema = new mongoose.Schema({
 
     firstName: {
         type: String,
@@ -25,6 +25,16 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: String
+    },
+
+    confirmed: {
+        type: Boolean,
+        default: false
+    },
+
+    role: {
+        type: String,
+        default: "USER"
     }
 
 }, {

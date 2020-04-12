@@ -4,7 +4,7 @@ import { Router } from "express";
 
 export type Middleware = (router: Router) => void;
 
-export const wrappers = fileLoader(path.join(__dirname, '*.js'));
+export const middlewareWrappers = fileLoader(path.join(__dirname, '*.js'));
 
 export function applyExpressMiddleware(router: Router, wrappers: any): void {
 
