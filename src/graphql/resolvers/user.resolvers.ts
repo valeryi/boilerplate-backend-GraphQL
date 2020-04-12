@@ -15,12 +15,6 @@ export const resolvers = {
 
         createUser: async (_obj: any, { data }: any, _context: any, _info: any) => {
 
-            const user = await userService.findByEmail(data.email);
-
-            if (user) {
-                throw new Error('User already exists'); // TODO: Add Error
-            }
-
             data.confirmed = true;
 
             return userService.createUser(data).then(created => {

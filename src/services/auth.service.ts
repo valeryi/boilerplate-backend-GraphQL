@@ -48,16 +48,6 @@ class AuthService extends BaseService {
 
     async signUp(params: any) {
 
-        // FIXME: This check if user exists is hardcoded twice. It would be more confortable to make it as a function
-        // in case I need to change something so I don't need to change the same thing in two different places
-        // this chech is in <Signup> and <CreateUser> Resolvers
-        const user = await userService.findByEmail(params.email);
-
-        if (user) {
-            //   throw new AuthenticationError(`This user already exists in the database`, { errors: ['user already exists'] })
-            throw new Error(`This user already exists in the database`);
-        }
-
         const created = await userService.createUser(params);
 
         this.sendConfirmLetter(created);
