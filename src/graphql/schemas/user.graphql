@@ -1,31 +1,47 @@
-directive @upper(test: String) on FIELD_DEFINITION
-directive @input(inputParams: String) on INPUT_FIELD_DEFINITION
+extend type Query {
+	allUsers: [User]
+	fetchUser(id: String): User
+}
 
 extend type Mutation {
-  createUser(data: InputUser!): User!
-  somethingElse(data: InputUser): User
+	createUser(data: InputUser!): User!
+	deleteUser(id: String): User!
+	updateUser(id: String!, data: Params!): User!
 }
 
-extend type Query {
-  allUsers: [User!]
-}
-
-# Add scaler types, Date, ...
 type User {
-  _id: ID
-  firstName: String! @upper(test: "params")
-  lastName: String!
-  email: String!
-  password: String!
-  avatar: String
-  createdAt: String!
-  updatedAt: String!
+	_id: ID!
+	firstName: String
+	lastName: String
+	email: String
+	confirmed: Boolean
+	role: ROLE
+	createdAt: DateTime
+	updatedAt: DateTime
+}
+
+input Params {
+	name: String
+	role: ROLE
+	confirmed: Boolean
+	firstName: String
+	lastName: String
+	email: String
+	facebook: String
+	instagram: String
 }
 
 input InputUser {
-  firstName: String! @input(inputParams: "params for input field")
-  lastName: String!
-  email: String!
-  password: String!
-  avatar: String
+	firstName: String
+	lastName: String
+	email: String!
+	password: String!
+	confirm: String!
+	confirmed: Boolean
+	role: ROLE
+}
+
+enum ROLE {
+	USER, 
+	ADMIN
 }

@@ -1,47 +1,39 @@
-import { User } from "../../services/users/users.model";
-
-interface InputUser {
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    avatar: string
-}
+import { userService } from "../../services/user.service";
 
 export const resolvers = {
-
     Query: {
-        allUsers: async (_parent: any, _args: any, _context: any, _info: any) => {
-            const allUsers = User.find();
 
-            // console.log('Resolver: ', _args);
-
-            return allUsers;
+        allUsers: async (_obj: any, _args: any, _context: any, _info: any) => {
+            return await userService.allUsers();
+        },
+        fetchUser: async (_obj: any, { id }: { id: string }, _context: any, _info: any) => {
+            return await userService.fetchUser(id);
         }
     },
 
     Mutation: {
 
-        createUser: async (
-            _obj: any,
-            { data }: { data: InputUser },
-            _context: any,
-            _info: any) => {
+        createUser: async (_obj: any, { data }: any, _context: any, _info: any) => {
 
-            const user = await User.findOne({ email: data.email });
+            const user = await userService.findByEmail(data.email);
 
             if (user) {
-                throw new Error('User already exists');
+                throw new Error('User already exists'); // TODO: Add Error
             }
 
-            const newUser = await new User({ ...data }).save();
+            data.confirmed = true;
 
-            return newUser;
-
+            return userService.createUser(data).then(created => {
+                return created;
+            });
         },
 
+        deleteUser: async (_obj: any, { id }: any, _context: any, _info: any) => {
+            return await userService.deleteUser(id);
+        },
+
+        updateUser: (_obj: any, { id, data }: any, _context: any, _info: any) => {
+            return userService.updateUser(id, data);
+        }
     }
 }
-
-
-

@@ -7,11 +7,9 @@ export const middleware = {
             context: any,
             info: any
         ) => {
-            // You can use middleware to override arguments
-            const { data } = args;
-            const modified = { ...data, firstName: data.firstName.toUpperCase() };
-            const result = await resolve(parent, { data: modified }, context, info);
-            // Or change the returned values of resolvers
+            // Before
+            const result = await resolve(parent, args, context, info);
+            // After
             return result;
         },
     },

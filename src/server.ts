@@ -1,34 +1,33 @@
 import express from 'express';
 import { applyGraphQLMiddleware } from './graphql';
-import { applyExpressMiddleware, wrappers } from './middlewares/index';
+import { applyExpressMiddleware, middlewareWrappers } from './middlewares/index';
+import { applyRoutes, routerWrappers } from './routes';
 import { applyErrorHandlers } from './errorHandlers';
 import * as errorHandlers from './errorHandlers/handlers';
-import { sysLog } from './utils/winston';
+import { sysLog, logger } from './utils/winston';
 import { env } from './environments';
 import { database } from './db/mongoose';
+import { googleAPI } from './utils/googleAPI';
 
-process.on("uncaughtException", e => { // LEARN: learn more about process and its properties and methods 
-    console.log(e);
+process.on("uncaughtException", (e: Error) => { // LEARN: learn more about process and its properties and methods 
+    logger.error(e);
     process.exit(1);
 });
 
-process.on("unhandledRejection", e => {
-    console.log(e);
+process.on("unhandledRejection", (e: any) => {
+    logger.error(e);
     process.exit(1);
 });
 
 const app = express();
 database.init();
+googleAPI.connect();
 
-applyExpressMiddleware(app, wrappers);
+applyExpressMiddleware(app, middlewareWrappers);
+applyRoutes(app, routerWrappers);
 applyGraphQLMiddleware(app);
 applyErrorHandlers(app, errorHandlers);
 
 app.listen(env.port, () => {
     sysLog.info(`Server running at: http://localhost:${env.port}/graphql`)
 });
-
-// Here I receive all necessary params and data for setting up an express / apollo server 
-// and apply all express middlewares - putting together all express modules
-
-// Here is the place where I am putting everything together to run the server - from all the modules
