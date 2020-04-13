@@ -22,7 +22,6 @@ type SignInStatus {
 	success: Boolean!
 	message: String!
 	token: String
-	errors: [String]
 }
 
 type SignUpStatus {

@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
-import { logger } from './winston';
 import { env } from '../environments';
+import { AuthenticationError } from 'apollo-server-express';
 
 const secret = env.token_secret as string;
 
@@ -24,7 +24,7 @@ export function verify(req: any, res: any) {
         }
 
         // verify token
-        const { payload, iat }: any = jwt.verify(token, secret, { // TODO: fix types of payload and iat
+        const { payload, iat }: any = jwt.verify(token, secret, {
             issuer: 'cocoon.finance'
         });
 
@@ -36,9 +36,21 @@ export function verify(req: any, res: any) {
         }
 
         return payload;
+
     } catch (err) {
         if (err.name !== 'TokenExpiredError') {
-            logger.error('JWT token check failed', err);
+            throw new AuthenticationError('JWT token check failed');
         }
     }
+}
+
+export function contextHook(ctx: any) {
+    const { req, res } = ctx;
+    const context: any = [];
+
+    // verify jwt token
+    context.authUser = verify(req, res);
+
+    return context;
+
 }

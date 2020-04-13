@@ -1,15 +1,14 @@
 import BaseService from "./base.service";
 import { compareSync } from "bcryptjs";
 import { User } from "../models/users.model";
-// import { AuthenticationError, DBError, ValidationError } from '../utils/';
 import { userService } from '../services/user.service';
 import { sign } from "../utils/jwt";
 import { DB_Error } from "../errorHandlers/HTTPErrors/ServerError";
 import { User as IUser } from './user.types';
 import SimpleCrypto from 'simple-crypto-js';
 import { mailService } from '../services/mail.service';
-
 import { env } from "../environments";
+import { AuthenticationError } from "apollo-server-express";
 
 class AuthService extends BaseService {
 
@@ -21,22 +20,19 @@ class AuthService extends BaseService {
         const user = await this.findByEmail(email);
 
         if (!user) {
-            //   throw new AuthenticationError(`User with this email doesn't exist: ${email}`, { errors: ['no such user'] })
-            throw new Error(`User with this email doesn't exist: ${email}`); // TODO: Proper Error 
+            throw new AuthenticationError(`User with this email doesn't exist: ${email}`); // TODO: Proper Error 
         }
 
         if (!compareSync(password, user.password)) {
-            //   throw new AuthenticationError(`Wrong creadentials`, { errors: ['wrong password'] })
-            throw new Error(`Wrong creadentials`);
+            throw new AuthenticationError(`Wrong creadentials`);
         }
 
         if (!user.confirmed) {
-            //   throw new AuthenticationError(`Email address is not confirmed yet. First, confirm your email address!`, { errors: ['email not confirmed'] })
-            throw new Error(`Email address is not confirmed yet. First, confirm your email address!`);
+            throw new AuthenticationError(`Email address is not confirmed yet. First, confirm your email address!`);
         }
 
         // TODO: Remove 'password' property from the object. delete user.password - doesn't work 
-        user.password = null;
+        delete user.password;
 
         const token = sign({ userData: user });
 

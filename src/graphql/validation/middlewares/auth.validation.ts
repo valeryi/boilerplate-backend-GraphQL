@@ -51,7 +51,7 @@ export async function checkIfUserExists(email: string): Promise<void> {
     const user = await userService.findByEmail(email);
 
     if (user) {
-        throw new Error(`This user already exists in the database: "${email}"`);
+        throw new ValidationError(`This user already exists in the database: "${email}"`);
     }
 
 }
