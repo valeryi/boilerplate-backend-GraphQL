@@ -19,6 +19,7 @@ export function verify(req: any, res: any) {
         // extract token
         const parts = req.headers.authorization ? req.headers.authorization.split(' ') : [''];
         const token = parts.length === 2 && parts[0].toLowerCase() === 'bearer' ? parts[1] : undefined;
+
         if (!token) {
             return undefined;
         }
