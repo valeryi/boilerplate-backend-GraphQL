@@ -3,14 +3,13 @@ import { env } from '../environments';
 import { AuthenticationError } from 'apollo-server-express';
 
 const secret = env.token_secret as string;
+const options: jwt.SignOptions = {
+    issuer: 'cocoon.finance',
+    expiresIn: '1h',
+    algorithm: 'HS256'
+};
 
 export function sign(payload: any) {
-    const options: jwt.SignOptions = {
-        issuer: 'cocoon.finance',
-        expiresIn: '1h',
-        algorithm: 'HS256'
-    };
-
     return jwt.sign({ payload }, secret, options);
 }
 
@@ -25,9 +24,7 @@ export function verify(req: any, res: any) {
         }
 
         // verify token
-        const { payload, iat }: any = jwt.verify(token, secret, {
-            issuer: 'cocoon.finance'
-        });
+        const { payload, iat }: any = jwt.verify(token, secret);
 
         // generate new token in every 15 minutes
         const diff = Math.floor(Date.now() / 1000) - iat;
