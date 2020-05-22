@@ -54,7 +54,8 @@
     "simple-crypto-js": "2.2.0",
     "validator": "13.0.0",
     "winston": "3.2.1",
-    "typescript": "3.8.3"
+    "typescript": "3.8.3",
+    "cpy-cli": "^3.1.1"
   },
   "devDependencies": {
     "tsc-watch": "^4.2.3"
