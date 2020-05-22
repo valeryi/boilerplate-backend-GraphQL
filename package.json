@@ -14,6 +14,9 @@
     "dev": "tsc-watch --onSuccess \"npm-run-all -s cpy start\"",
     "heroku": "npm-run-all clean build start"
   },
+  "engines": {
+    "node": "12.16.3"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
