@@ -10,7 +10,7 @@ export const production = {
         password: process.env.DB_PASSWORD,
         name: process.env.DB_NAME,
     },
-    log_level: 'error',
+    log_level: 'info',
     mail: {
         host: process.env.MAIL_HOST,
         port: process.env.MAIL_PORT,

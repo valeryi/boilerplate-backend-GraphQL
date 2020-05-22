@@ -9,7 +9,7 @@ import { env } from './environments';
 import { database } from './db/mongoose';
 import { googleAPI } from './utils/googleAPI';
 
-process.on("uncaughtException", (e: Error) => { // LEARN: learn more about process and its properties and methods 
+process.on("uncaughtException", (e: Error) => { 
     logger.error(e);
     process.exit(1);
 });
