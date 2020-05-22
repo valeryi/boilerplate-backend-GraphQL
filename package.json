@@ -8,10 +8,10 @@
     "predev": "npm-run-all -s clean",
     "clean": "rm -rf ./dist",
     "start": "node ./dist/server.js",
-    "tsc": "tsc",
-    "cpy": "cpy src/graphql/schemas/*.graphql dist/graphql/schemas --no-overwrite",
-    "build": "tsc&&npm run cpy",
-    "dev": "tsc-watch --onSuccess \"npm-run-all -s cpy start\"",
+    "compile": "tsc",
+    "copy": "cpy src/graphql/schemas/*.graphql dist/graphql/schemas --no-overwrite",
+    "build": "tsc&&npm run copy",
+    "dev": "tsc-watch --onSuccess \"npm-run-all -s copy start\"",
     "heroku": "npm-run-all clean build start"
   },
   "engines": {
