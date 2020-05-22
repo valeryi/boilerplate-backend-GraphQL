@@ -12,7 +12,7 @@
     "cpy": "cpy src/graphql/schemas/*.graphql dist/graphql/schemas --no-overwrite",
     "build": "npm-run-all tsc cpy",
     "dev": "tsc-watch --onSuccess \"npm-run-all -s cpy start\"",
-    "heroku": "npm-run-all clean tsc cpy start"
+    "heroku": "npm run clean&&tsc&&npm run cpy&&npm run start"
   },
   "engines": {
     "node": "12.16.3",
