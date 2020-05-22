@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "npm-run-all -s clean",
     "predev": "npm-run-all -s clean",
-    "clean": "rimraf dist",
+    "clean": "rm -rf dist",
     "start": "node ./dist/server.js",
     "tsc": "tsc",
     "cpy": "cpy src/graphql/schemas/*.graphql dist/graphql/schemas --no-overwrite",
