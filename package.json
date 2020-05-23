@@ -12,10 +12,10 @@
     "copy": "cpy src/graphql/schemas/*.graphql dist/graphql/schemas --no-overwrite",
     "build": "tsc&&npm run copy",
     "dev": "tsc-watch --onSuccess \"npm-run-all -s copy start\"",
-    "heroku": "npm-run-all clean compile copy start"
+    "heroku": "set NODE_OPTIONS=--max_old_space_size=4096&&npm-run-all clean compile copy start"
   },
   "engines": {
-    "node": "12.10.0",
+    "node": "12.16.3",
     "npm": "6.14.4"
   },
   "author": "",
