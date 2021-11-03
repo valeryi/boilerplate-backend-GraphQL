@@ -52,7 +52,7 @@
     "password-validator": "5.0.3",
     "rimraf": "3.0.2",
     "simple-crypto-js": "2.2.0",
-    "validator": "13.0.0",
+    "validator": "13.7.0",
     "winston": "3.2.1",
     "typescript": "3.8.3",
     "cpy-cli": "^3.1.1"
